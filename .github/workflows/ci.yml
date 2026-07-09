@@ -70,6 +70,9 @@ jobs:
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
     
+    - name: Build amazon-mcp-common
+      run: pnpm --filter amazon-mcp-common build
+    
     - name: Run tests with coverage
       run: pnpm -r test:coverage
     
