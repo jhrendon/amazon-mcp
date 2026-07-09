@@ -46,14 +46,14 @@ amazon-mcp/
 
 - Node.js >= 18
 - pnpm >= 9
-- LWA (Login with Amazon) credentials - [get them here](https://developer.amazon.com/)
+- LWA (Login with Amazon) credentials — obtain them from **Seller Central → Developer** section (Apps & Credentials)
 - For Seller Central: SP-API Refresh Token, Seller ID, Marketplace ID
 - For Ads API: Refresh Token with `advertising::campaign_management` scope, Profile ID
 
 ## Installation
 
 ```bash
-git clone https://github.com/your-org/amazon-mcp.git
+git clone https://github.com/jhrendon/amazon-mcp.git
 cd amazon-mcp
 pnpm install
 cp .env.example .env
