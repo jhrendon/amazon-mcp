@@ -921,3 +921,501 @@ export interface ListDataKioskQueriesResponse {
   queries: DataKioskQuery[];
   nextToken?: string;
 }
+
+// Feeds API Types (2021-06-30)
+export type FeedProcessingStatus =
+  | 'CANCELLED'
+  | 'DONE'
+  | 'FATAL'
+  | 'IN_PROGRESS'
+  | 'IN_QUEUE';
+
+export interface Feed {
+  feedId: string;
+  feedType: string;
+  marketplaceIds?: string[];
+  createdTime: string;
+  processingStatus: FeedProcessingStatus;
+  processingStartTime?: string;
+  processingEndTime?: string;
+  resultFeedDocumentId?: string;
+}
+
+export interface GetFeedsResponse {
+  feeds: Feed[];
+  nextToken?: string;
+}
+
+export interface CreateFeedRequest {
+  feedType: string;
+  marketplaceIds: string[];
+  inputFeedDocumentId: string;
+  feedOptions?: Record<string, string>;
+}
+
+export interface CreateFeedResponse {
+  feedId: string;
+}
+
+export interface FeedEncryptionDetails {
+  standard: string;
+  initializationVector: string;
+  key: string;
+}
+
+export interface CreateFeedDocumentRequest {
+  contentType: string;
+}
+
+export interface CreateFeedDocumentResponse {
+  feedDocumentId: string;
+  url: string;
+  encryptionDetails: FeedEncryptionDetails;
+}
+
+export interface GetFeedDocumentResponse {
+  feedDocumentId: string;
+  url: string;
+  compressionAlgorithm?: string;
+}
+
+// Fulfillment Outbound API Types (2020-07-01)
+export type ShippingSpeedCategory = 'Standard' | 'Expedited' | 'Priority' | 'ScheduledDelivery';
+
+export interface FulfillmentOutboundAddress {
+  name?: string;
+  line1: string;
+  line2?: string;
+  line3?: string;
+  city: string;
+  stateOrRegion: string;
+  postalCode: string;
+  countryCode: string;
+}
+
+export interface FulfillmentOrderItem {
+  sellerSku: string;
+  sellerFulfillmentOrderItemId?: string;
+  quantity: number;
+  giftMessage?: string;
+  displayableComment?: string;
+  orderItemDisposition?: string;
+  perUnitDeclaredValue?: Money;
+  perUnitPrice?: Money;
+  perUnitTax?: Money;
+  sku?: string;
+}
+
+export interface FulfillmentOrder {
+  sellerFulfillmentOrderId: string;
+  marketplaceId?: string;
+  displayableOrderId?: string;
+  displayableOrderDate?: string;
+  displayableOrderComment?: string;
+  shippingSpeedCategory?: ShippingSpeedCategory;
+  deliveryWindow?: string;
+  destinationAddress?: FulfillmentOutboundAddress;
+  fulfillmentOrderStatus?: string;
+  statusUpdatedDate?: string;
+  notificationEmails?: string[];
+  codSettings?: Record<string, unknown>;
+  featureConstraints?: Record<string, unknown>[];
+  items?: FulfillmentOrderItem[];
+}
+
+export interface FulfillmentShipment {
+  amazonShipmentId?: string;
+  fulfillmentCenterId?: string;
+  fulfillmentShipmentStatus?: string;
+  shippingDate?: string;
+  estimatedArrivalDate?: string;
+  info?: Record<string, unknown>;
+  packages?: Record<string, unknown>[];
+}
+
+export interface FulfillmentPreviewItem {
+  sellerSku?: string;
+  quantity?: number;
+  shippingWeightCalculationMethod?: string;
+  shippingWeight?: Record<string, unknown>;
+  estimatedShippingWeight?: Record<string, unknown>;
+  estimatedFees?: Record<string, unknown>[];
+  unfulfillablePreviewIndices?: number[];
+  fulfillmentPreviewShipments?: FulfillmentPreviewShipment[];
+  isFulfillable?: boolean;
+  isCapableOfGiftwrap?: boolean;
+  isCapableOfItemsMessage?: boolean;
+  isCapableOfItemsShipMessage?: boolean;
+}
+
+export interface FulfillmentPreviewShipment {
+  earliestShipDate?: string;
+  latestShipDate?: string;
+  earliestArrivalDate?: string;
+  latestArrivalDate?: string;
+  fulfillmentPreviewShipmentId?: string;
+  isFulfillable?: boolean;
+  shippingSpeedCategory?: ShippingSpeedCategory;
+  isCODCapable?: boolean;
+  marketplaceId?: string;
+  unfulfillablePreviewIndices?: number[];
+  estimatedShippingWeight?: Record<string, unknown>;
+  estimatedFees?: Record<string, unknown>[];
+  fulfillmentPreviewItems?: FulfillmentPreviewItem[];
+}
+
+export interface GetFulfillmentPreviewResponse {
+  fulfillmentPreviews?: FulfillmentPreviewShipment[];
+  unfulfillablePreviewItems?: FulfillmentPreviewItem[];
+  marketplaceId?: string;
+}
+
+export interface ListFulfillmentOrdersResponse {
+  fulfillmentOrders?: FulfillmentOrder[];
+  nextToken?: string;
+}
+
+export interface GetFulfillmentOrderResponse {
+  fulfillmentOrder?: FulfillmentOrder;
+  fulfillmentOrderItems?: FulfillmentOrderItem[];
+  fulfillmentShipments?: FulfillmentShipment[];
+  returnItems?: Record<string, unknown>[];
+  returnAuthorizations?: Record<string, unknown>[];
+}
+
+export interface PackageTrackingDetails {
+  packageNumber?: number;
+  trackingNumber?: string;
+  customerTrackingLink?: string;
+  carrierCode?: string;
+  carrierPhoneNumber?: string;
+  shipDate?: string;
+  estimatedArrivalDate?: string;
+  trackingEvents?: Record<string, unknown>[];
+}
+
+export interface ReturnReasonCode {
+  returnReasonCode?: string;
+  description?: string;
+  translatedDescription?: string;
+}
+
+export interface ListReturnReasonCodesResponse {
+  returnReasonCodes?: ReturnReasonCode[];
+}
+
+export interface FulfillmentReturnItem {
+  sellerReturnItemId: string;
+  sellerFulfillmentOrderItemId: string;
+  amazonShipmentId: string;
+  returnReasonCode: string;
+  returnComment?: string;
+}
+
+export interface CreateFulfillmentReturnResponse {
+  returnItems?: Record<string, unknown>[];
+  returnAuthorizations?: Record<string, unknown>[];
+}
+
+export interface MCFFeature {
+  featureName?: string;
+  featureDescription?: string;
+  sellerEligible?: boolean;
+}
+
+export interface GetFeaturesResponse {
+  features?: MCFFeature[];
+}
+
+export interface FeatureInventoryItem {
+  sellerSku?: string;
+  fnSku?: string;
+  overstockQuantity?: number;
+  availableQuantity?: number;
+}
+
+export interface GetFeatureInventoryResponse {
+  featureName?: string;
+  featureInventory?: FeatureInventoryItem[];
+  nextToken?: string;
+}
+
+export interface GetFeatureSkuResponse {
+  featureName?: string;
+  isEligible?: boolean;
+  ineligibleReasons?: string[];
+}
+
+// FBA Inbound v2024-03-20 Extended Types
+export interface InboundPlanItem {
+  asin?: string;
+  sellerSku?: string;
+  msKU?: string;
+  quantity?: number;
+  labelOwner?: string;
+  prepOwner?: string;
+  expiration?: string;
+  manufacturingLotCode?: string;
+}
+
+export interface ListInboundPlanItemsResponse {
+  items: InboundPlanItem[];
+  pagination?: {
+    nextToken?: string;
+  };
+}
+
+export interface PackageGrouping {
+  packingGroupId?: string;
+  boxInformation?: BoxInformation[];
+}
+
+export interface BoxInformation {
+  boxContentSource?: string;
+  quantity?: number;
+  weight?: InboundWeight;
+  dimensions?: InboundDimensions;
+}
+
+export interface InboundWeight {
+  value?: number;
+  unit?: string;
+}
+
+export interface InboundDimensions {
+  length?: number;
+  width?: number;
+  height?: number;
+  unit?: string;
+}
+
+export interface InboundOperationStatus {
+  operationId: string;
+  operationStatus?: string;
+  operationProgress?: string;
+  operationError?: Record<string, unknown>;
+}
+
+export interface PackingOption {
+  packingOptionId: string;
+  status?: string;
+  packageGroupings?: PackageGrouping[];
+}
+
+export interface ListPackingOptionsResponse {
+  packingOptions: PackingOption[];
+  pagination?: {
+    nextToken?: string;
+  };
+}
+
+export interface PackingGroupBox {
+  boxId?: string;
+  quantity?: number;
+  weight?: InboundWeight;
+  dimensions?: InboundDimensions;
+}
+
+export interface ListPackingGroupBoxesResponse {
+  boxes: PackingGroupBox[];
+  pagination?: {
+    nextToken?: string;
+  };
+}
+
+export interface PlacementOption {
+  placementOptionId: string;
+  status?: string;
+  shipmentPlacementSummaries?: Array<{
+    shipmentId?: string;
+    destinationRegion?: string;
+  }>;
+}
+
+export interface ListPlacementOptionsResponse {
+  placementOptions: PlacementOption[];
+  pagination?: {
+    nextToken?: string;
+  };
+}
+
+export interface TransportationOption {
+  transportationOptionId: string;
+  shipmentId?: string;
+  carrierCode?: string;
+  shippingMode?: string;
+  quote?: Money;
+}
+
+export interface ListTransportationOptionsResponse {
+  transportationOptions: TransportationOption[];
+  pagination?: {
+    nextToken?: string;
+  };
+}
+
+export interface TransportationOptionConfirmation {
+  shipmentId: string;
+  transportationOptionId: string;
+  contactInformation?: {
+    name?: string;
+    phone?: string;
+    email?: string;
+  };
+}
+
+export interface PrepDetail {
+  asin?: string;
+  sellerSku?: string;
+  prepGuidance?: string[];
+  prepInstructions?: Array<{
+    prepOwner?: string;
+    prepType?: string;
+  }>;
+}
+
+export interface ListPrepDetailsResponse {
+  prepDetails: PrepDetail[];
+  pagination?: {
+    nextToken?: string;
+  };
+}
+
+export interface ItemComplianceDetail {
+  asin?: string;
+  sellerSku?: string;
+  complianceStatus?: string;
+  complianceDetails?: Array<{
+    complianceType?: string;
+    status?: string;
+  }>;
+}
+
+export interface ListItemComplianceDetailsResponse {
+  itemComplianceDetails: ItemComplianceDetail[];
+  pagination?: {
+    nextToken?: string;
+  };
+}
+
+export interface ShipmentItemDetail {
+  asin?: string;
+  sellerSku?: string;
+  quantity?: number;
+}
+
+export interface ListShipmentItemsResponse {
+  items: ShipmentItemDetail[];
+  pagination?: {
+    nextToken?: string;
+  };
+}
+
+export interface ShipmentBox {
+  boxId?: string;
+  quantity?: number;
+  weight?: InboundWeight;
+  dimensions?: InboundDimensions;
+}
+
+export interface ListShipmentBoxesResponse {
+  boxes: ShipmentBox[];
+  pagination?: {
+    nextToken?: string;
+  };
+}
+
+export interface ShipmentPallet {
+  palletId?: string;
+  quantity?: number;
+  weight?: InboundWeight;
+  dimensions?: InboundDimensions;
+}
+
+export interface ListShipmentPalletsResponse {
+  pallets: ShipmentPallet[];
+  pagination?: {
+    nextToken?: string;
+  };
+}
+
+export interface DeliveryWindowOption {
+  deliveryWindowOptionId: string;
+  startDate?: string;
+  endDate?: string;
+  availabilityType?: string;
+}
+
+export interface ListDeliveryWindowOptionsResponse {
+  deliveryWindowOptions: DeliveryWindowOption[];
+  pagination?: {
+    nextToken?: string;
+  };
+}
+
+export interface ItemLabel {
+  label?: string;
+  labelFormat?: string;
+}
+
+export interface CreateItemLabelsResponse {
+  pageId?: string;
+  labelDocument?: string;
+}
+
+// Notifications API Types (v1)
+export interface ProcessingDirective {
+  eventFilter?: Record<string, unknown>;
+}
+
+export interface NotificationSubscription {
+  subscriptionId: string;
+  payloadVersion: string;
+  destinationId: string;
+  processingDirective?: ProcessingDirective;
+  notificationType?: string;
+}
+
+export interface GetSubscriptionResponse {
+  payload: NotificationSubscription;
+}
+
+export interface CreateSubscriptionResponse {
+  payload: NotificationSubscription;
+}
+
+export interface DeleteSubscriptionResponse {
+  payload?: Record<string, never>;
+}
+
+export interface DestinationResource {
+  sqs?: { arn: string };
+  eventBridge?: { region: string; accountId: string };
+}
+
+export interface DestinationResourceSpecification {
+  sqs?: { arn: string };
+  eventBridge?: { region: string; accountId: string };
+}
+
+export interface NotificationDestination {
+  destinationId: string;
+  name: string;
+  resource: DestinationResource;
+}
+
+export interface GetDestinationsResponse {
+  payload: NotificationDestination[];
+}
+
+export interface GetDestinationResponse {
+  payload: NotificationDestination;
+}
+
+export interface CreateDestinationResponse {
+  payload: NotificationDestination;
+}
+
+export interface DeleteDestinationResponse {
+  payload?: Record<string, never>;
+}

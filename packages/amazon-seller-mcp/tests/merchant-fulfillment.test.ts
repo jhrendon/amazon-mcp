@@ -1,5 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
+vi.mock('../src/config/index.js', () => ({
+  getConfig: () => ({
+    LWA_CLIENT_ID: 'test', LWA_CLIENT_SECRET: 'test', LWA_REFRESH_TOKEN: 'test',
+    SELLER_ID: 'test', MARKETPLACE_ID: 'ATVPDKIKX0DER',
+    SP_API_ENDPOINT: 'https://sellingpartnerapi-na.amazon.com',
+  }),
+}));
+
 const postMock = vi.fn();
 const getMock = vi.fn();
 const deleteMock = vi.fn();
@@ -149,6 +157,7 @@ describe('merchant fulfillment tools', () => {
 
       expect(deleteMock).toHaveBeenCalledWith(
         '/mfn/v0/shipments/shp-1',
+        undefined,
         expect.objectContaining({ rateLimitCategory: 'merchantFulfillment' })
       );
       expect(result.structuredContent.status).toBe('Cancelled');

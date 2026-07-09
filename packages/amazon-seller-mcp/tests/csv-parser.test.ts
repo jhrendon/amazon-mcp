@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { parseCSV, parseCSVRow } from '../src/utils/csv-parser.js';
 
 describe('parseCSV', () => {
@@ -35,7 +36,7 @@ describe('parseCSV', () => {
 
   it('parses rows without a header using numeric column keys', () => {
     const csv = 'a\tb\tc\n';
-    const result = parseCSV(csv, { hasHeader: false });
+    const result = parseCSV(csv, { hasHeaders: false });
 
     expect(result).toEqual([{ col_0: 'a', col_1: 'b', col_2: 'c' }]);
   });

@@ -23,6 +23,13 @@ export const SP_API_RATE_LIMITS: Record<string, RateLimiterConfig> = {
   tokens: { requestsPerSecond: 0.1, burstSize: 5 },
   merchantFulfillment: { requestsPerSecond: 1, burstSize: 5 },
   dataKiosk: { requestsPerSecond: 0.5, burstSize: 5 },
+  feeds: { requestsPerSecond: 0.0222, burstSize: 10 },
+  notifications: { requestsPerSecond: 1, burstSize: 5 },
+  fulfillmentOutbound: { requestsPerSecond: 2, burstSize: 30 },
+  productTypeDefinitions: { requestsPerSecond: 5, burstSize: 10 },
+  listingsRestrictions: { requestsPerSecond: 5, burstSize: 10 },
+  sellers: { requestsPerSecond: 0.016, burstSize: 15 },
+  aplusContent: { requestsPerSecond: 10, burstSize: 10 },
   default: { requestsPerSecond: 1, burstSize: 5 },
 };
 

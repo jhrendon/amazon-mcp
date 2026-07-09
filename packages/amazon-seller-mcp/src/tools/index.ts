@@ -15,7 +15,15 @@ import { registerFBAInboundTools } from './fba-inbound.js';
 import { registerTokensTools } from './tokens.js';
 import { registerMerchantFulfillmentTools } from './merchant-fulfillment.js';
 import { registerDataKioskTools } from './data-kiosk.js';
+import { registerFeedsTools } from './feeds.js';
+import { registerNotificationsTools } from './notifications.js';
 import { registerAllReportTools } from './reports/index.js';
+import { registerFulfillmentOutboundTools } from './fulfillment-outbound.js';
+import { registerPricingV0Tools } from './pricing-v0.js';
+import { registerProductTypeDefinitionTools } from './product-type-definitions.js';
+import { registerListingsRestrictionsTools } from './listings-restrictions.js';
+import { registerSellersTools } from './sellers.js';
+import { registerAplusContentTools } from './aplus-content.js';
 
 export function registerAllTools(server: McpServer): void {
   registerOrderTools(server);
@@ -33,7 +41,15 @@ export function registerAllTools(server: McpServer): void {
   registerTokensTools(server);
   registerMerchantFulfillmentTools(server);
   registerDataKioskTools(server);
+  registerFeedsTools(server);
+  registerNotificationsTools(server);
   registerAllReportTools(server);
+  registerFulfillmentOutboundTools(server);
+  registerPricingV0Tools(server);
+  registerProductTypeDefinitionTools(server);
+  registerListingsRestrictionsTools(server);
+  registerSellersTools(server);
+  registerAplusContentTools(server);
 }
 
 export {
@@ -52,5 +68,13 @@ export {
   registerTokensTools,
   registerMerchantFulfillmentTools,
   registerDataKioskTools,
+  registerFeedsTools,
+  registerNotificationsTools,
   registerAllReportTools,
+  registerFulfillmentOutboundTools,
+  registerPricingV0Tools,
+  registerProductTypeDefinitionTools,
+  registerListingsRestrictionsTools,
+  registerSellersTools,
+  registerAplusContentTools,
 };

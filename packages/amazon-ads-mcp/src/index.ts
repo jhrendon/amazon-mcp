@@ -32,6 +32,9 @@ import { registerSPWriteTools } from './tools/writes/sp-writes.js';
 import { registerSBWriteTools } from './tools/writes/sb-writes.js';
 import { registerSDWriteTools } from './tools/writes/sd-writes.js';
 
+// Negative Keywords & Targets
+import { registerNegativeTools } from './tools/negative.js';
+
 // Optimization
 import { registerSPKeywordSuggestionsTools } from './tools/optimization/sp-keyword-suggestions.js';
 import { registerSBKeywordSuggestionsTools } from './tools/optimization/sb-keyword-suggestions.js';
@@ -43,6 +46,15 @@ import { registerAcosBreakdownTools } from './tools/optimization/acos-breakdown.
 import { registerCrossMcpTools } from './tools/cross-mcp/correlate-reports.js';
 import { registerTacosTools } from './tools/cross-mcp/tacos.js';
 import { registerOrganicVsAdTools } from './tools/cross-mcp/organic-vs-ad.js';
+
+// SB Creative, Stores & Video
+import { registerSBCreativeTools } from './tools/sb-creative.js';
+
+// Budget & Bid Recommendations
+import { registerRecommendationsTools } from './tools/recommendations.js';
+
+// Portfolios
+import { registerPortfolioTools } from './tools/portfolios.js';
 
 async function validateConnection(): Promise<boolean> {
   try {
@@ -102,6 +114,9 @@ async function main() {
     registerSBWriteTools(server);
     registerSDWriteTools(server);
 
+    // Negative Keywords & Targets
+    registerNegativeTools(server);
+
     // Optimization
     registerSPKeywordSuggestionsTools(server);
     registerSBKeywordSuggestionsTools(server);
@@ -113,6 +128,15 @@ async function main() {
     registerCrossMcpTools(server);
     registerTacosTools(server);
     registerOrganicVsAdTools(server);
+
+    // SB Creative, Stores & Video
+    registerSBCreativeTools(server);
+
+    // Budget & Bid Recommendations
+    registerRecommendationsTools(server);
+
+    // Portfolios
+    registerPortfolioTools(server);
 
     const transport = new StdioServerTransport();
     await server.connect(transport);

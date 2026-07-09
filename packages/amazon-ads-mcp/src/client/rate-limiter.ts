@@ -11,6 +11,15 @@ export const ADS_API_RATE_LIMITS: Record<string, RateLimiterConfig> = {
   reports: { requestsPerSecond: 1, burstSize: 5 },
   profiles: { requestsPerSecond: 1, burstSize: 5 },
   suggestions: { requestsPerSecond: 1, burstSize: 5 },
+  negativeKeywords: { requestsPerSecond: 2, burstSize: 10 },
+  negativeTargets: { requestsPerSecond: 2, burstSize: 10 },
+  sbStores: { requestsPerSecond: 2, burstSize: 10 },
+  sbCreative: { requestsPerSecond: 2, burstSize: 10 },
+  sbLandingPages: { requestsPerSecond: 2, burstSize: 10 },
+  budgetRecommendations: { requestsPerSecond: 2, burstSize: 10 },
+  bidRecommendations: { requestsPerSecond: 2, burstSize: 10 },
+  budgetRules: { requestsPerSecond: 2, burstSize: 10 },
+  portfolios: { requestsPerSecond: 2, burstSize: 10 },
   default: { requestsPerSecond: 1, burstSize: 5 },
 };
 

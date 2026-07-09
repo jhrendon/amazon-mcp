@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { RateLimiter } from '../src/client/rate-limiter.js';
+import { createRateLimiter, type RateLimiter } from 'amazon-mcp-common';
 
 describe('RateLimiter token bucket', () => {
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('RateLimiter token bucket', () => {
   });
 
   it('consumes the full burst immediately', async () => {
-    const limiter = new RateLimiter({ requestsPerSecond: 1, burstSize: 3 });
+    const limiter = createRateLimiter({ requestsPerSecond: 1, burstSize: 3 });
 
     const p1 = limiter.acquire();
     const p2 = limiter.acquire();
@@ -21,60 +21,58 @@ describe('RateLimiter token bucket', () => {
   });
 
   it('makes requests beyond the burst wait until a token refills', async () => {
-    const limiter = new RateLimiter({ requestsPerSecond: 1, burstSize: 1 });
+    const limiter = createRateLimiter({ requestsPerSecond: 1, burstSize: 2 });
 
-    await limiter.acquire();
-    const pending = limiter.acquire();
+    const p1 = limiter.acquire();
+    const p2 = limiter.acquire();
+    const p3 = limiter.acquire();
 
-    let resolved = false;
-    pending.then(() => {
-      resolved = true;
-    });
+    await Promise.all([p1, p2]);
 
-    // Yield to let the queue processor enter its sleep
-    await Promise.resolve();
-    expect(resolved).toBe(false);
+    let p3Resolved = false;
+    void p3.then(() => { p3Resolved = true; });
 
-    vi.advanceTimersByTime(1000);
-    await pending;
-    expect(resolved).toBe(true);
+    await vi.advanceTimersByTimeAsync(500);
+    expect(p3Resolved).toBe(false);
+
+    await vi.advanceTimersByTimeAsync(600);
+    await p3;
+    expect(p3Resolved).toBe(true);
   });
 
   it('refills tokens over time', async () => {
-    const limiter = new RateLimiter({ requestsPerSecond: 2, burstSize: 1 });
+    const limiter = createRateLimiter({ requestsPerSecond: 2, burstSize: 2 });
 
-    await limiter.acquire();
-    const pending = limiter.acquire();
+    const p1 = limiter.acquire();
+    const p2 = limiter.acquire();
+    await Promise.all([p1, p2]);
 
-    let resolved = false;
-    pending.then(() => {
-      resolved = true;
-    });
+    expect(limiter.getAvailableTokens()).toBeLessThan(0.5);
 
-    await Promise.resolve();
-    expect(resolved).toBe(false);
+    await vi.advanceTimersByTimeAsync(1000);
 
-    // At 2 tokens/second, the next token is available after 500ms
-    vi.advanceTimersByTime(500);
-    await pending;
-    expect(resolved).toBe(true);
+    expect(limiter.getAvailableTokens()).toBeGreaterThanOrEqual(1.5);
   });
 
   it('preserves FIFO queue order as tokens refill', async () => {
-    const limiter = new RateLimiter({ requestsPerSecond: 1, burstSize: 1 });
+    const limiter = createRateLimiter({ requestsPerSecond: 1, burstSize: 1 });
+
     const order: number[] = [];
 
     const p1 = limiter.acquire().then(() => order.push(1));
+    await p1;
+
     const p2 = limiter.acquire().then(() => order.push(2));
     const p3 = limiter.acquire().then(() => order.push(3));
+    const p4 = limiter.acquire().then(() => order.push(4));
 
-    await p1;
-    vi.advanceTimersByTime(1000);
+    await vi.advanceTimersByTimeAsync(1100);
     await p2;
-
-    vi.advanceTimersByTime(1000);
+    await vi.advanceTimersByTimeAsync(1100);
     await p3;
+    await vi.advanceTimersByTimeAsync(1100);
+    await p4;
 
-    expect(order).toEqual([1, 2, 3]);
+    expect(order).toEqual([1, 2, 3, 4]);
   });
 });

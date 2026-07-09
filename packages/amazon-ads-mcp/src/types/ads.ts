@@ -65,6 +65,29 @@ export interface ProductAd {
   state: ProductAdState;
 }
 
+export type NegativeKeywordMatchType = 'NEGATIVE_EXACT' | 'NEGATIVE_PHRASE';
+
+export interface NegativeKeyword {
+  keywordId: number;
+  campaignId: number;
+  adGroupId: number;
+  keywordText: string;
+  matchType: NegativeKeywordMatchType;
+  state: KeywordState;
+}
+
+export interface NegativeTarget {
+  targetId: number;
+  campaignId: number;
+  adGroupId: number;
+  state: TargetState;
+  expressionType?: string;
+  expression?: Array<{
+    type: string;
+    value: string;
+  }>;
+}
+
 export interface ListParams {
   stateFilter?: string;
   campaignIdFilter?: number[];

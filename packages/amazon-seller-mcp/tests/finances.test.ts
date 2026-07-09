@@ -1,5 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { z } from 'zod';
+
+vi.mock('../src/config/index.js', () => ({
+  getConfig: () => ({
+    LWA_CLIENT_ID: 'test', LWA_CLIENT_SECRET: 'test', LWA_REFRESH_TOKEN: 'test',
+    SELLER_ID: 'test', MARKETPLACE_ID: 'ATVPDKIKX0DER',
+    SP_API_ENDPOINT: 'https://sellingpartnerapi-na.amazon.com',
+  }),
+}));
+
 import { registerFinanceTools } from '../src/tools/finances.js';
 import { setParticipatingMarketplaceIds } from '../src/tools/_shared/marketplace.js';
 
