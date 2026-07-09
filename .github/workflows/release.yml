@@ -17,9 +17,9 @@ jobs:
         fetch-depth: 0
     
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2
+      uses: pnpm/action-setup@v4
       with:
-        version: 8
+        version: 10
     
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -50,6 +50,13 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     
+    - name: Publish amazon-seller-mcp
+      run: |
+        cd packages/amazon-seller-mcp
+        pnpm publish --access public --no-git-checks
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    
     - name: Publish amazon-ads-mcp
       run: |
         cd packages/amazon-ads-mcp
@@ -70,6 +77,7 @@ jobs:
           
           ## Packages
           - amazon-mcp-common@${{ github.ref_name }}
+          - amazon-seller-mcp@${{ github.ref_name }}
           - amazon-ads-mcp@${{ github.ref_name }}
         draft: false
         prerelease: false
