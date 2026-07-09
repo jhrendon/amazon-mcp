@@ -34,11 +34,6 @@ const baseAddress = {
   countryCode: 'US',
 };
 
-const baseItem = {
-  sellerSku: 'SKU-1',
-  quantity: 2,
-};
-
 describe('fulfillment outbound tools', () => {
   beforeEach(() => {
     getMock.mockReset();

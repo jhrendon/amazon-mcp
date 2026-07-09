@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { createRateLimiter, type RateLimiter } from 'amazon-mcp-common';
+import { createRateLimiter } from 'amazon-mcp-common';
 
 describe('RateLimiter token bucket', () => {
   beforeEach(() => {

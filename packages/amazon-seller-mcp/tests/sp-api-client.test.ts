@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { SPAPIError } from '../src/client/sp-api-client.js';
 
 vi.mock('../src/config/index.js', () => ({

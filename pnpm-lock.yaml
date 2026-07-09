@@ -6,7 +6,20 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.17.0
+        version: 9.39.4
+      eslint:
+        specifier: ^9.17.0
+        version: 9.39.4
+      eslint-config-prettier:
+        specifier: ^9.1.0
+        version: 9.1.2(eslint@9.39.4)
+      typescript-eslint:
+        specifier: ^8.18.0
+        version: 8.63.0(eslint@9.39.4)(typescript@5.9.3)
 
   packages/amazon-ads-mcp:
     dependencies:
