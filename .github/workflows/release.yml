@@ -1,0 +1,75 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'pnpm'
+        registry-url: 'https://registry.npmjs.org'
+    
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    
+    - name: Type check
+      run: pnpm typecheck
+    
+    - name: Lint
+      run: pnpm lint
+    
+    - name: Run tests
+      run: pnpm test
+    
+    - name: Build
+      run: pnpm build
+    
+    - name: Publish amazon-mcp-common
+      run: |
+        cd packages/amazon-mcp-common
+        pnpm publish --access public --no-git-checks
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    
+    - name: Publish amazon-ads-mcp
+      run: |
+        cd packages/amazon-ads-mcp
+        pnpm publish --access public --no-git-checks
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          ## Changes
+          - Automated release from tag ${{ github.ref }}
+          
+          ## Packages
+          - amazon-mcp-common@${{ github.ref_name }}
+          - amazon-ads-mcp@${{ github.ref_name }}
+        draft: false
+        prerelease: false

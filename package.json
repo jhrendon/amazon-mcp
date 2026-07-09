@@ -1,0 +1,18 @@
+{
+  "name": "amazon-mcp",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Monorepo for Amazon MCP servers (Seller Central + Ads API)",
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "clean": "pnpm -r clean"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@10.33.4"
+}
